@@ -1,19 +1,19 @@
 var data = require("./fakeData");
 
 const getUser = (req, res, next) => {
-  // Converter o texto do parâmetro 'name' para minúsculas, e verifica se o parâmetro 'name' realmente existe
-  const name = req.query.name?.toLowerCase();
+  // A forma ideal de buscar um registro de usuário é utilizando o id, então apliquei a busca pelo id, pois assim se torma mais performatico a busca de usuário
+  const { id } = req.params;
 
-  // Se o parâmetro 'name' não foi informado é retornando essa informação para o usuário
-  if (!name) {
-    res.status(404).send("Nome não informado");
+  // Se o parâmetro 'id' não foi informado é retornando essa informação para o usuário
+  if (!id) {
+    res.status(404).send("ID não informado");
   }
 
   // Substitui o loop(for) pelo método find, assim não precisa percorrer todo o array, parando no primeiro registro encontrado.
-  // Não faço diferenciação entre letras maiúsculas e minúsculas, simplificando a pesquisa do usuário.
-  const user = data.find((user) => user.name?.toLowerCase().includes(name));
+  // Agoara a busca não é mais pelo nome, e sim pelo ID do usuário, simplificando a pesquisa do usuário.
+  const user = data.find((user) => user.id == id);
 
-  //Se existir usuário com o nome informado então retorna, caso contrário retorna uma mensagem informando que não foi encontrado registros
+  //Se existir usuário com o ID informado então retorna, caso contrário retorna uma mensagem informando que não foi encontrado registros
   if (user) {
     res.send(user);
   } else {
