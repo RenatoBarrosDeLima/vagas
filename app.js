@@ -27,11 +27,17 @@ app.get("/", function (req, res) {
   `);
 });
 
-// Agora para buscar um usuário é feito uma pesquisa nesse formato {host}/user/ID, sendo que o 'ID' é o ID do usuário
+// Agora é esperado receber o ID do usuário na busca, sendo assim, para buscar um usuário a rota é utilizada dessa forma:
+// {host}/user/ID, sendo que o 'ID' é o ID do usuário
 app.get("/user/:id", teste1.getUser);
+
 app.get("/users", teste1.getUsers);
 app.post("/users", teste2);
-app.delete("/users", teste3);
+
+// Agora é esperado receber o ID do usuário na exclusão, sendo assim, para excluir um usuário a rota é utlizada dessa forma:
+// {host}/users/ID, sendo que o 'ID' é o ID do usuário
+app.delete("/users/:id", teste3);
+
 app.put("/users", teste4);
 app.get("/users/access", teste5);
 

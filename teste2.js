@@ -7,7 +7,7 @@ module.exports = function (req, res) {
 
   // Fiz um tratamento para evitar de salvar um registro sem 'name' e 'job'
   if (!name || !job) {
-    res.status(500).send({ error: "É necessário informar name e job" });
+    res.status(500).send("É necessário informar name e job");
   }
 
   // Lógica para adicionar o ID nos novos registros criados
