@@ -10,8 +10,11 @@ module.exports = function (req, res) {
     res.status(500).send({ error: "É necessário informar name e job" });
   }
 
+  // Lógica para adicionar o ID nos novos registros criados
+  var id = data[data.length - 1].id + 1;
+
   // Aqui também foi aplicado a destructuring para melhorar ainda mais o código
-  var newUser = { name, job };
+  var newUser = { id, name, job };
 
   data.push(newUser);
 
