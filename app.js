@@ -42,6 +42,9 @@ app.delete("/users/:id", teste3);
 // {host}/users/ID, sendo que o 'ID' é o ID do usuário
 app.put("/users/:id", teste4);
 
+// Rota para definir quantas vezes um usuário foi lido na função getUser do teste1
+app.get("/user/count/:id", teste1.getUserListCount);
+
 app.get("/users/access", teste5);
 
 const port = 3000;
