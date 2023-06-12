@@ -2,6 +2,7 @@ var data = require("./fakeData");
 
 module.exports = function (req, res) {
   // Foi aplicado a destructuring nas variáveis 'name' e 'job'
+  //  O código original não estava funcionando, pois estava sendo declarada uma variável 'jov' e sendo utilizada outra chamada 'job'
   const { name, job } = req.body;
 
   // Fiz um tratamento para evitar de salvar um registro sem 'name' e 'job'
