@@ -38,7 +38,10 @@ app.post("/users", teste2);
 // {host}/users/ID, sendo que o 'ID' é o ID do usuário
 app.delete("/users/:id", teste3);
 
-app.put("/users", teste4);
+// Agora é esperado receber o ID do usuário na edição, sendo assim, para editar um usuário a rota é utlizada dessa forma:
+// {host}/users/ID, sendo que o 'ID' é o ID do usuário
+app.put("/users/:id", teste4);
+
 app.get("/users/access", teste5);
 
 const port = 3000;
