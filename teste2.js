@@ -1,17 +1,18 @@
-var data =  require("./fakeData");
+var data = require("./fakeData");
 
-module.exports = function(req, res){
-  
-    var name =  req.body.name;
-    var jov =  req.body.job;
-    
-    var newUser = {
-        name: name,
-        job: job,
-    }
+module.exports = function (req, res) {
+  // Foi aplicado a destructuring nas variáveis 'name' e 'job'
+  const { name, job } = req.body;
 
-    data.push(newUser)
-    
-    res.send(newUser);
+  // Fiz um tratamento para evitar de salvar um registro sem 'name' e 'job'
+  if (!name || !job) {
+    res.status(500).send({ error: "É necessário informar name e job" });
+  }
 
+  // Aqui também foi aplicado a destructuring para melhorar ainda mais o código
+  var newUser = { name, job };
+
+  data.push(newUser);
+
+  res.send(newUser);
 };
