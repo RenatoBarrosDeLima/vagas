@@ -1,6 +1,7 @@
 var express = require("express");
 var bodyParser = require("body-parser");
 var app = express();
+var data = require("./fakeData");
 
 var teste1 = require("./teste1");
 var teste2 = require("./teste2");
@@ -27,6 +28,54 @@ app.get("/", function (req, res) {
   `);
 });
 
+const checkPermissionsDelete = (req, res, next) => {
+  // Suponha que o ID do usuário seja passado pelo cabeçalho da requisição
+  const userId = req.headers["user-id"];
+
+  if (!userId) {
+    res.status(403).send("Permissão negada");
+  }
+
+  // Permissão necessária para a ação de deletar
+  const allowedPermissions = "delete";
+
+  const user = data.find((user) => user.id == userId);
+
+  if (!user) {
+    res.status(403).send("Permissão negada");
+  }
+
+  if (
+    user.permissions?.some((permission) => permission == allowedPermissions)
+  ) {
+    next();
+  } else {
+    res.status(403).send("Permissão negada");
+  }
+};
+
+const checkPermissionsUpdate = (req, res, next) => {
+  // Suponha que o ID do usuário seja passado pelo cabeçalho da requisição
+  const userId = req.headers["user-id"];
+
+  // Permissão necessária para a ação de editar
+  const allowedPermissions = "update";
+
+  const user = data.find((user) => user.id == userId);
+
+  if (!user) {
+    res.status(403).send("Permissão negada");
+  }
+
+  if (
+    user.permissions?.some((permission) => permission == allowedPermissions)
+  ) {
+    next();
+  } else {
+    res.status(403).send("Permissão negada");
+  }
+};
+
 // Agora é esperado receber o ID do usuário na busca, sendo assim, para buscar um usuário a rota é utilizada dessa forma:
 // {host}/user/ID, sendo que o 'ID' é o ID do usuário
 app.get("/user/:id", teste1.getUser);
@@ -36,11 +85,15 @@ app.post("/users", teste2);
 
 // Agora é esperado receber o ID do usuário na exclusão, sendo assim, para excluir um usuário a rota é utlizada dessa forma:
 // {host}/users/ID, sendo que o 'ID' é o ID do usuário
-app.delete("/users/:id", teste3);
+// Como foi criado o middleware agora também é necessário passar o user-id no headers, sendo que esse user-id é o ID do usuário
+// Foi criado uma chave 'permissions' no fakeData, em que essa chave é que dá as permissões para o usuário apagar ou editar um usuário
+app.delete("/users/:id", checkPermissionsDelete, teste3);
 
 // Agora é esperado receber o ID do usuário na edição, sendo assim, para editar um usuário a rota é utlizada dessa forma:
 // {host}/users/ID, sendo que o 'ID' é o ID do usuário
-app.put("/users/:id", teste4);
+// Como foi criado o middleware agora também é necessário passar o user-id no headers, sendo que esse user-id é o ID do usuário
+// Para conceder permissões de apagar ou editar basta atualizar o usuário passando a chave "permissions": ["update", "delete"], podendo passar apenas uma dessas
+app.put("/users/:id", checkPermissionsUpdate, teste4);
 
 // Rota para definir quantas vezes um usuário foi lido na função getUser do teste1
 app.get("/user/count/:id", teste1.getUserListCount);

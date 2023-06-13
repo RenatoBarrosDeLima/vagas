@@ -2,7 +2,7 @@ var data = require("./fakeData");
 
 module.exports = function (req, res) {
   const { id } = req.params;
-  const { name, job } = req.body;
+  const { name, job, permissions } = req.body;
 
   // Apliquei a destructuring na variável ID
 
@@ -12,7 +12,7 @@ module.exports = function (req, res) {
   }
 
   // Fiz um tratamento para evitar de atualizar um registro sem 'name' e 'job'
-  if (!name && !job) {
+  if (!name && !job && !permissions) {
     res.status(500).send("É necessário informar name ou job");
   }
 
@@ -24,6 +24,9 @@ module.exports = function (req, res) {
     }
     if (job) {
       user.job = job;
+    }
+    if (permissions) {
+      user.permissions = permissions;
     }
     res.send(user);
   } else {
